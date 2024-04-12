@@ -7,3 +7,4 @@ class ExamplePage(BasePage):
 
     input_search = Element('//*[@title="Поиск"]')
     btn_search = Element('(//*[@value="Мне повезёт!"])[1]')
+    text_h1 = Element("(//h1)[2]")

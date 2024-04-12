@@ -27,6 +27,12 @@ class WebElement(BaseElement):
         self.web_element.click()
         self.page.wait_for_load_state()
 
+    def check_text(self, text):
+        self._init()
+        self.page.wait_for_load_state()
+        tc = self.web_element.text_content().strip()
+        assert tc == text, "Текст не совпадает"
+
     def fill(self, text):
         self._init()
         return self.web_element.fill(text)

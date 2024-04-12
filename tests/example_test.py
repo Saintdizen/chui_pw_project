@@ -18,7 +18,5 @@ def test_title(chrome):
     with allure_step("Заполнить поля"):
         page.input_search.fill("Вот так вот")
         page.btn_search.click()
-    with allure_step("Проверить заголовок"):
-        print(page.get_title())
-
-
+    with allure_step("Проверить текст"):
+        page.text_h1.check_text("Невский: Вот так вот1")

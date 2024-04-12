@@ -8,7 +8,7 @@ from web.allure.allure import allure_step
 @allure.story('Какое-то стори')
 def test_title(chrome):
     """
-    Описание...
+    Описание
     """
 
     page = ExamplePage(chrome.page)

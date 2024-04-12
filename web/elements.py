@@ -24,17 +24,17 @@ class WebElement(BaseElement):
 
     def click(self):
         self._init()
-        self.web_element.click()
         self.page.wait_for_load_state()
+        self.web_element.click()
 
     def check_text(self, text):
         self._init()
         self.page.wait_for_load_state()
-        tc = self.web_element.text_content().strip()
-        assert tc == text, "Текст не совпадает"
+        assert self.web_element.text_content().strip() == text, "Текст не совпадает"
 
     def fill(self, text):
         self._init()
+        self.page.wait_for_load_state()
         return self.web_element.fill(text)
 
 

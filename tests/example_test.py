@@ -8,15 +8,17 @@ from web.allure.allure import allure_step
 @allure.story('Какое-то стори')
 def test_title(chrome):
     """
-    Тут будет Ваше описание
+    Описание...
     """
-    # Инициализация страницы
+
     page = ExamplePage(chrome.page)
-    # Шаги
+
     with allure_step("Открыть страницу"):
         page.open()
+
     with allure_step("Заполнить поля"):
         page.input_search.fill("Вот так вот")
         page.btn_search.click()
+
     with allure_step("Проверить текст"):
-        page.text_h1.check_text("Невский: Вот так вот1")
+        page.text_h1.check_text("Невский: Вот так вот")

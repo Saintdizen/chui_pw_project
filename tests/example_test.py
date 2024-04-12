@@ -7,7 +7,12 @@ from web.allure.allure import allure_step
 @allure.feature('Какая-то фича')
 @allure.story('Какое-то стори')
 def test_title(chrome):
+    """
+    Тут будет Ваше описание
+    """
+    # Инициализация страницы
     page = ExamplePage(chrome.page)
+    # Шаги
     with allure_step("Открыть страницу"):
         page.open()
     with allure_step("Заполнить поля"):

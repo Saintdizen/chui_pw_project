@@ -18,7 +18,7 @@ def allure_step(name):
     with allure.step(name):
         try:
             yield
-            Browsers.page.wait_for_load_state()
+            Browsers.page.wait_for_load_state("domcontentloaded")
             make_screen("screen")
         except Exception:
             make_screen("error")

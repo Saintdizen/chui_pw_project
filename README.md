@@ -1,3 +1,5 @@
+# Документация
+* https://playwright.dev/python/docs/api/class-playwright
 # Установка
 ## Установка зависимостей
 ```shell

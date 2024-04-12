@@ -1,6 +1,8 @@
 from dotenv import load_dotenv
-from playwright.sync_api import Page, Browser
+from playwright.sync_api import Page, Browser, Playwright, BrowserContext
 from pydantic import BaseSettings
+
+from settings import settings
 
 load_dotenv()
 
@@ -8,12 +10,25 @@ load_dotenv()
 class Browsers(BaseSettings):
     browser: Browser = None
     page: Page = None
-    __timeout: float = 20
+    __context: BrowserContext = None
+    __timeout: int = settings.timeout
+    __width: int = settings.browser_width
+    __height: int = settings.browser_height
 
-    def __new__(cls, playwright):
+    @staticmethod
+    def set_timeout(sec):
+        return sec*1000
+
+    def __new__(cls, playwright: Playwright):
+        print(cls.set_timeout(cls.__timeout))
         cls.browser = playwright.chromium.launch(headless=False)
-        context = cls.browser.new_context()
-        context.set_default_timeout(cls.__timeout)
-        context.set_default_navigation_timeout(cls.__timeout)
-        cls.page = cls.browser.new_page()
+        # context
+        cls.__context = cls.browser.new_context(
+            viewport={"width": cls.__width, "height": cls.__height}
+        )
+        cls.__context.set_default_timeout(cls.set_timeout(cls.__timeout))
+        cls.__context.set_default_navigation_timeout(cls.set_timeout(cls.__timeout))
+        # page
+        cls.page = cls.__context.new_page()
+        # return
         return cls

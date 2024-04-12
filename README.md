@@ -1,7 +1,4 @@
 # Установка
-```shell
-git rm -r --cached "путь до файла или папки"
-```
 ## Установка зависимостей
 ```shell
 pip install -r requirements.txt

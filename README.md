@@ -15,6 +15,11 @@ playwright install
 pytest -s -v tests/example_test.py --alluredir allure
 ```
 ## Запуск генерации отчета
+### linux
 ```shell
 web/allure/bin/allure serve allure
+```
+### windows
+```shell
+web/allure/bin/allure.bat serve allure
 ```

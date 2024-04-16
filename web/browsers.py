@@ -20,7 +20,6 @@ class Browsers(BaseSettings):
         return sec*1000
 
     def __new__(cls, playwright: Playwright):
-        print(cls.set_timeout(cls.__timeout))
         cls.browser = playwright.chromium.launch(headless=False)
         # context
         cls.__context = cls.browser.new_context(

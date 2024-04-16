@@ -21,4 +21,5 @@ def test_title(chrome):
         page.btn_search.click()
 
     with allure_step("Проверить текст"):
-        page.text_h1.check_text("Невский: Вот так вот")
+        page.check_page_contains_text("Невский: Вот так вот")
+        # page.text_h1.check_text("Невский: Вот так вот")

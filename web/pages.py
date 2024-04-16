@@ -29,5 +29,4 @@ class BasePage(abc.ABC):
             visible_list = list(filter(lambda x: x.is_visible() is True, self.page.locator(xpath).all()))
             if len(visible_list) == 0:
                 errors.append(text)
-
         assert errors == 0, f"Текст '{errors}' не найден на странице"

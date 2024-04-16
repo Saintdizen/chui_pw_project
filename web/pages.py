@@ -1,5 +1,4 @@
 import abc
-import time
 from dataclasses import dataclass
 
 from playwright.sync_api import Page

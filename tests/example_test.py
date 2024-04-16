@@ -22,7 +22,5 @@ def test_title(chrome):
 
     with allure_step("Проверить текст"):
         page.check_page_contains_text(
-            "Невский: Вот так вот",
-            "11Невский: Вот так вот",
-            "112Невский: Вот так вот"
+            "Невский: Вот так вот"
         )

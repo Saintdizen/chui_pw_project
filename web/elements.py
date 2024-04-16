@@ -31,17 +31,17 @@ class WebElement(BaseElement):
         self.__wait()
         self.web_element.click()
 
-    def check_text(self, text):
-        self._init()
-        self.__wait()
-        assert self.web_element.text_content().strip() == text, "Текст не совпадает"
-
     def fill(self, text):
         self._init()
         self.__wait()
         return self.web_element.fill(text)
 
-    def get_value(self):
+    def check_text(self, text):
+        self._init()
+        self.__wait()
+        assert self.web_element.text_content().strip() == text, "Текст не совпадает"
+
+    def get_value(self) -> str:
         self._init()
         self.__wait()
         return self.web_element.input_value()
@@ -50,6 +50,37 @@ class WebElement(BaseElement):
         self._init()
         self.__wait()
         return self.web_element.clear()
+
+    def get_attribute(self, attribute) -> str:
+        self._init()
+        self.__wait()
+        return self.web_element.get_attribute(attribute).strip()
+
+    # ===
+    def is_visible(self) -> bool:
+        self._init()
+        self.__wait()
+        return self.web_element.is_visible()
+
+    def is_hidden(self) -> bool:
+        self._init()
+        self.__wait()
+        return self.web_element.is_hidden()
+
+    def is_checked(self) -> bool:
+        self._init()
+        self.__wait()
+        return self.web_element.is_checked()
+
+    def is_enabled(self) -> bool:
+        self._init()
+        self.__wait()
+        return self.web_element.is_enabled()
+
+    def is_disabled(self) -> bool:
+        self._init()
+        self.__wait()
+        return self.web_element.is_disabled()
 
 
 @dataclass

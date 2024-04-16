@@ -23,7 +23,11 @@ class BasePage(abc.ABC):
 
     def check_page_contains_text(self, *texts):
         self.page.wait_for_load_state()
+        errors = []
         for text in texts:
             xpath = f"//body//*[contains(normalize-space(.), '{text}')]"
             visible_list = list(filter(lambda x: x.is_visible() is True, self.page.locator(xpath).all()))
-            assert len(visible_list) > 0, f"Текст {text} не найден"
+            if len(visible_list) == 0:
+                errors.append(text)
+
+        assert errors == 0, f"Текст '{errors}' не найден на странице"

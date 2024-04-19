@@ -10,8 +10,8 @@ pip install -r requirements.txt
 playwright install
 ```
 ## Структура
-* В корне проекта создать папку **tests**
-* В папке **tests** создать файл **example_page.py**
+* В корне проекта создать папку **tests** **( ../tests )**
+* В папке **tests** создать файл **example_page.py** **( ../tests/example_page.py )**
 ### example_page.py
 ```python
 from web.elements import Element
@@ -26,7 +26,7 @@ class ExamplePage(BasePage):
     text_h1 = Element("(//h1)[2]")
 
 ```
-* В папке **tests** создать файл **example_test.py**
+* В папке **tests** создать файл **example_test.py** **( ../tests/example_test.py )**
 ### example_test.py
 ```python
 import allure

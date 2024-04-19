@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     timeout: int = 20
     browser_width: int = 1600
     browser_height: int = 900
+    write_har: bool = False
 
 
 settings = Settings()

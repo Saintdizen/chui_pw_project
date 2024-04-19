@@ -9,6 +9,7 @@ __pycache__/
 *.har
 # Distribution / packaging
 .Python
+tests/
 build/
 develop-eggs/
 dist/

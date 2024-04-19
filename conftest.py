@@ -6,4 +6,8 @@ from web.browsers import Browsers
 
 @fixture
 def chrome(playwright: Playwright):
-    yield Browsers(playwright)
+    test = Browsers(playwright)
+    yield test
+    test.context.close()
+    test.page.close()
+    test.browser.close()

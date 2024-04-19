@@ -10,7 +10,7 @@ load_dotenv()
 class Browsers(BaseSettings):
     browser: Browser = None
     page: Page = None
-    __context: BrowserContext = None
+    context: BrowserContext = None
     __timeout: int = settings.timeout
     __width: int = settings.browser_width
     __height: int = settings.browser_height
@@ -22,12 +22,16 @@ class Browsers(BaseSettings):
     def __new__(cls, playwright: Playwright):
         cls.browser = playwright.chromium.launch(headless=False)
         # context
-        cls.__context = cls.browser.new_context(
-            viewport={"width": cls.__width, "height": cls.__height}
+        cls.context = cls.browser.new_context(
+            viewport={"width": cls.__width, "height": cls.__height}, record_har_path="har.har"
         )
-        cls.__context.set_default_timeout(cls.set_timeout(cls.__timeout))
-        cls.__context.set_default_navigation_timeout(cls.set_timeout(cls.__timeout))
+        cls.context.set_default_timeout(cls.set_timeout(cls.__timeout))
+        cls.context.set_default_navigation_timeout(cls.set_timeout(cls.__timeout))
         # page
-        cls.page = cls.__context.new_page()
+        cls.page = cls.context.new_page()
+        # cls.page.on("request", lambda request: print(request.url))
+        # cls.page.on("response", lambda response: print(response.url))
         # return
         return cls
+
+

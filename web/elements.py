@@ -19,7 +19,7 @@ class WebElement(BaseElement):
         self.page = Browsers.page
 
     def __wait(self):
-        self.page.wait_for_load_state(timeout=settings.timeout)
+        self.page.wait_for_load_state()
 
     @property
     def web_element(self):

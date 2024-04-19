@@ -3,8 +3,6 @@ from dataclasses import dataclass
 
 from playwright.sync_api import Page
 
-from settings import settings
-
 
 @dataclass
 class BasePage(abc.ABC):
@@ -12,7 +10,7 @@ class BasePage(abc.ABC):
     url = None
 
     def __wait(self):
-        self.page.wait_for_load_state(timeout=settings.timeout)
+        self.page.wait_for_load_state()
 
     class Elements:
         pass

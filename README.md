@@ -32,7 +32,7 @@ class ExamplePage(BasePage):
 import allure
 
 from tests.example_page import ExamplePage
-from web.allure.allure import allure_step
+from web.allure.allure import t_step
 
 
 @allure.feature('Какая-то фича')
@@ -47,14 +47,14 @@ def test_title(chrome):
     page.on("request", lambda request: print(request.url))
     page.on("response", lambda response: print(response.url))
 
-    with allure_step("Открыть страницу"):
+    with t_step("Открыть страницу"):
         page.open()
 
-    with allure_step("Заполнить поля"):
+    with t_step("Заполнить поля"):
         page.input_search.fill("Вот так вот")
         page.btn_search.click()
 
-    with allure_step("Проверить текст"):
+    with t_step("Проверить текст"):
         page.check_page_contains_text(
             "Невский: Вот так вот"
         )

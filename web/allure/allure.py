@@ -14,7 +14,7 @@ def make_screen(name):
 
 
 @contextmanager
-def allure_step(name):
+def t_step(name):
     with allure.step(name):
         try:
             yield

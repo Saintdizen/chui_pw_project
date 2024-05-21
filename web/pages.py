@@ -2,6 +2,8 @@ import abc
 from dataclasses import dataclass
 
 from playwright.sync_api import Page
+import typing
+from typing import Literal
 
 
 @dataclass
@@ -32,3 +34,6 @@ class BasePage(abc.ABC):
             if len(visible_list) == 0:
                 errors.append(text)
         assert len(errors) == 0, f"Текст '{errors}' не найден на странице"
+
+    def on(self, event: str, f: typing.Callable[..., None]) -> None:
+        return self.page.on(event=event, f=f)

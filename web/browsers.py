@@ -41,8 +41,6 @@ class Browsers(BaseSettings):
         cls.context.set_default_navigation_timeout(cls.__set_timeout(cls.__timeout))
         # page
         cls.page = cls.context.new_page()
-        # cls.page.on("request", lambda request: print(request.url))
-        # cls.page.on("response", lambda response: print(response.url))
         # return
         return cls
 

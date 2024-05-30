@@ -35,7 +35,7 @@ class Browsers(BaseSettings):
             cls.browser.new_browser_cdp_session()
         else:
             cls.browser = playwright.chromium.launch(headless=False)
-        time.sleep(5)
+        time.sleep(1)
         cls.context = cls.browser.new_context(
             screen={"width": cls.__width, "height": cls.__height},
             record_har_path=cls.__har_path, no_viewport=True

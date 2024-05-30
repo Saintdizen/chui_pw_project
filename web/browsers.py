@@ -33,13 +33,14 @@ class Browsers(BaseSettings):
         if settings.remote:
             cls.browser = playwright.chromium.connect_over_cdp(ws)
             cls.browser.new_browser_cdp_session()
+            cls.context = cls.browser.new_context(
+                screen={"width": cls.__width, "height": cls.__height}, record_har_path=cls.__har_path, no_viewport=True
+            )
         else:
             cls.browser = playwright.chromium.launch(headless=False)
-        time.sleep(1)
-        cls.context = cls.browser.new_context(
-            screen={"width": cls.__width, "height": cls.__height},
-            record_har_path=cls.__har_path, no_viewport=True
-        )
+            cls.context = cls.browser.new_context(
+                viewport={"width": cls.__width, "height": cls.__height}, record_har_path=cls.__har_path
+            )
         cls.context.set_default_timeout(cls.__set_timeout(cls.__timeout))
         cls.context.set_default_navigation_timeout(cls.__set_timeout(cls.__timeout))
         cls.page = cls.context.new_page()

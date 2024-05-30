@@ -1,4 +1,5 @@
 import abc
+import time
 from dataclasses import dataclass
 
 from playwright.sync_api import Page
@@ -21,6 +22,10 @@ class BasePage(abc.ABC):
         self.page.goto(url or self.url)
         self.__wait()
 
+    @staticmethod
+    def sleep(times):
+        time.sleep(times)
+
     def get_title(self):
         self.__wait()
         return self.page.title()
@@ -37,3 +42,6 @@ class BasePage(abc.ABC):
 
     def on(self, event: str, f: typing.Callable[..., None]) -> None:
         return self.page.on(event=event, f=f)
+
+    def execute_js(self, script, arg=None):
+        return self.page.evaluate(script, arg)

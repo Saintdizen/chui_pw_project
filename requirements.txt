@@ -3,3 +3,5 @@ playwright
 pydantic[dotenv]==1.8.2
 allure-pytest
 allure-python-commons
+selenium==4.0.0.a7
+six

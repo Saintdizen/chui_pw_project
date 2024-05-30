@@ -4,30 +4,35 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 from web.browsers import Browsers, MobileBrowsers
+from settings import settings
 
 
 @fixture
 def chrome(playwright: Playwright):
-    capabilities = {
-        "browserName": "chrome",
-        "selenoid:options": {
-            "enableVideo": False,
-            "enableVNC": True,
-            "name": "test",
-            "env": ["LANG=ru_RU.UTF-8", "LANGUAGE=ru:en", "LC_ALL=ru_RU.UTF-8"],
-            "timezone": "Europe/Moscow",
+    driver = None
+    if settings.remote:
+        capabilities = {
+            "browserName": "chrome",
+            "selenoid:options": {
+                "enableVideo": False,
+                "enableVNC": True,
+                "name": "test",
+                "env": ["LANG=ru_RU.UTF-8", "LANGUAGE=ru:en", "LC_ALL=ru_RU.UTF-8"],
+                "timezone": "Europe/Moscow",
+            }
         }
-    }
-    driver = webdriver.Remote(desired_capabilities=capabilities, command_executor='http://127.0.0.1:4444/wd/hub')
-    driver.maximize_window()
-    ws = f"ws://127.0.0.1:4444/devtools/{driver.session_id}"
-    browser = Browsers(playwright, ws)
-    driver.close()
+        driver = webdriver.Remote(desired_capabilities=capabilities, command_executor=f'{settings.selenoid_host}/wd/hub')
+        driver.maximize_window()
+        browser = Browsers(playwright, f"{settings.selenoid_ws}/devtools/{driver.session_id}")
+        driver.close()
+    else:
+        browser = Browsers(playwright)
     yield browser
     browser.context.close()
     browser.page.close()
     browser.browser.close()
-    driver.quit()
+    if settings.remote:
+        driver.quit()
 
 
 @fixture

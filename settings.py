@@ -9,7 +9,10 @@ class Settings(BaseSettings):
     browser_width: int = 1600
     browser_height: int = 900
     write_har: bool = False
-    remote: bool = True
+    #
+    remote: bool = False
+    selenoid_host: str = None
+    selenoid_ws: str = None
 
 
 settings = Settings()

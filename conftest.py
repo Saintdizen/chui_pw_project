@@ -15,7 +15,7 @@ def chrome(playwright: Playwright):
             "browserName": "chrome",
             "selenoid:options": {
                 "enableVideo": False,
-                "enableVNC": True,
+                "enableVNC": settings.selenoid_enable_vnc,
                 "name": "test",
                 "env": ["LANG=ru_RU.UTF-8", "LANGUAGE=ru:en", "LC_ALL=ru_RU.UTF-8"],
                 "timezone": "Europe/Moscow",

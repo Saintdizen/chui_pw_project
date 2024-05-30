@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     remote: bool = False
     selenoid_host: str = None
     selenoid_ws: str = None
+    selenoid_enable_vnc: bool = False
 
 
 settings = Settings()

@@ -27,20 +27,17 @@ class Browsers(BaseSettings):
     def __set_name_har_file():
         return datetime.now().strftime("%d-%m-%Y_%H:%M:%S")
 
-    def __new__(cls, playwright: Playwright, ws = None):
+    def __new__(cls, playwright: Playwright, ws=None):
+        screen = {"width": cls.__width, "height": cls.__height}
         if settings.write_har:
             cls.__har_path = f'{cls.__set_name_har_file()}_log.har'
         if settings.remote:
             cls.browser = playwright.chromium.connect_over_cdp(ws)
             cls.browser.new_browser_cdp_session()
-            cls.context = cls.browser.new_context(
-                screen={"width": cls.__width, "height": cls.__height}, record_har_path=cls.__har_path, no_viewport=True
-            )
+            cls.context = cls.browser.new_context(screen=screen, record_har_path=cls.__har_path, no_viewport=True)
         else:
             cls.browser = playwright.chromium.launch(headless=False)
-            cls.context = cls.browser.new_context(
-                viewport={"width": cls.__width, "height": cls.__height}, record_har_path=cls.__har_path
-            )
+            cls.context = cls.browser.new_context(viewport=screen, record_har_path=cls.__har_path)
         cls.context.set_default_timeout(cls.__set_timeout(cls.__timeout))
         cls.context.set_default_navigation_timeout(cls.__set_timeout(cls.__timeout))
         cls.page = cls.context.new_page()
@@ -67,9 +64,9 @@ class MobileBrowsers(BaseSettings):
     def __new__(cls, playwright: Playwright):
         if settings.write_har:
             cls.__har_path = f'{cls.__set_name_har_file()}_log.har'
-        devises = playwright.devices['Pixel 5']
+        devices = playwright.devices['Pixel 5']
         cls.browser = playwright.chromium.launch(headless=False)
-        cls.context = cls.browser.new_context(**devises, record_har_path=cls.__har_path)
+        cls.context = cls.browser.new_context(**devices, record_har_path=cls.__har_path)
         cls.context.set_default_timeout(cls.__set_timeout(cls.__timeout))
         cls.context.set_default_navigation_timeout(cls.__set_timeout(cls.__timeout))
         cls.page = cls.context.new_page()

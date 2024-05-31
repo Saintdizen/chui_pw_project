@@ -12,8 +12,8 @@ def test_title(chrome):
     """
     page = ExamplePage(chrome.page)
     # Перехват запросов \ ответов
-    # page.on("request", lambda request: print(request.url))
-    # page.on("response", lambda response: print(response.url))
+    page.on("request", lambda request: print(request.url))
+    page.on("response", lambda response: print(response.url))
 
     with t_step("Открыть страницу"):
         page.open()

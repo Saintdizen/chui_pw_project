@@ -19,6 +19,6 @@ def t_step(name):
         try:
             yield
             make_screen("screen")
-        except Exception as e:
+        except Exception:
             make_screen("error")
             raise

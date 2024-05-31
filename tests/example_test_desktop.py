@@ -1,5 +1,3 @@
-import time
-
 import allure
 
 from tests.example_page import ExamplePage

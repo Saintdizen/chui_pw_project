@@ -22,8 +22,8 @@ def test_title(chrome):
         page.open()
 
     with t_step("Заполнить поля"):
-        page.Mobile.input_search.fill("Вот так вот")
-        page.Mobile.btn_search.click()
+        page.Mobile.input_search.wait_visible().fill("Вот так вот")
+        page.Mobile.btn_search.wait_visible().click()
 
     with t_step("Проверить текст"):
         page.check_page_contains_text(

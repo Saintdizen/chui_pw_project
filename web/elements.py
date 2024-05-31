@@ -21,63 +21,62 @@ class WebElement(BaseElement):
         self.page.wait_for_load_state(timeout=self.timeout)
 
     @property
-    def web_element(self):
+    def __web_element(self):
         self._init()
         element = self.page.locator(self.xpath)
-        element.wait_for(timeout=self.timeout, state="attached")
         element.wait_for(timeout=self.timeout, state="visible")
         return element
 
     def wait_visible(self):
         self._init()
-        self.web_element.wait_for(timeout=self.timeout, state="attached")
-        self.web_element.wait_for(timeout=self.timeout, state="visible")
-        return self.web_element
+        self.__web_element.wait_for(timeout=self.timeout, state="visible")
+        return self
 
     def click(self):
         self._init()
-        self.web_element.click()
+        self.__web_element.click()
 
     def fill(self, text):
         self._init()
-        self.web_element.fill(value=text, no_wait_after=False, force=True)
+        self.__web_element.fill(value=text)
 
     def check_text(self, text):
         self._init()
-        assert self.web_element.text_content().strip() == text, "Текст не совпадает"
+        check_txt = self.__web_element.text_content().strip()
+        assert check_txt == text, f"Текст не совпадает"
 
     def get_value(self) -> str:
         self._init()
-        return self.web_element.input_value()
+        return self.__web_element.input_value()
 
     def clear(self):
         self._init()
-        self.web_element.clear()
+        self.__web_element.clear()
 
     def get_attribute(self, attribute) -> str:
         self._init()
-        return self.web_element.get_attribute(attribute).strip()
+        return self.__web_element.get_attribute(attribute).strip()
 
     # ===
     def is_visible(self) -> bool:
         self._init()
-        return self.web_element.is_visible()
+        return self.__web_element.is_visible()
 
     def is_hidden(self) -> bool:
         self._init()
-        return self.web_element.is_hidden()
+        return self.__web_element.is_hidden()
 
     def is_checked(self) -> bool:
         self._init()
-        return self.web_element.is_checked()
+        return self.__web_element.is_checked()
 
     def is_enabled(self) -> bool:
         self._init()
-        return self.web_element.is_enabled()
+        return self.__web_element.is_enabled()
 
     def is_disabled(self) -> bool:
         self._init()
-        return self.web_element.is_disabled()
+        return self.__web_element.is_disabled()
 
 
 @dataclass

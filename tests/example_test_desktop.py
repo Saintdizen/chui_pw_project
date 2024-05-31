@@ -13,7 +13,6 @@ def test_title(chrome):
     Описание
     """
     page = ExamplePage(chrome.page)
-
     # Перехват запросов \ ответов
     # page.on("request", lambda request: print(request.url))
     # page.on("response", lambda response: print(response.url))

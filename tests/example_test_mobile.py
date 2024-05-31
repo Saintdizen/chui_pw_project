@@ -16,6 +16,7 @@ def test_title(mobile, chrome):
     # Перехват запросов \ ответов
     # page.on("request", lambda request: print(request.url))
     # page.on("response", lambda response: print(response.url))
+
     with t_step("Открыть страницу"):
         page.open()
 

@@ -63,7 +63,7 @@ def test_title(chrome):
 # Запуск
 ## Запуск теста
 ```shell
-pytest -s -v tests/example_test.py --alluredir allure
+pytest -s -v tests/example_test_desktop.py --alluredir allure
 ```
 ## Генерация отчета
 ### linux

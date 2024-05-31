@@ -18,9 +18,6 @@ def mobile():
 
 @fixture
 def chrome(playwright: Playwright, request):
-    test_case_id = request.node.nodeid
-    test_file_path = request.fspath
-    print(f"\nTEST FILEPATH: {test_file_path}\nTEST CASE ID: {test_case_id}\n")
     driver = None
     if settings.remote:
         capabilities = {
@@ -28,7 +25,7 @@ def chrome(playwright: Playwright, request):
             "selenoid:options": {
                 "enableVideo": False,
                 "enableVNC": settings.selenoid_enable_vnc,
-                "name": test_case_id,
+                "name": request.node.nodeid,
                 "env": ["LANG=ru_RU.UTF-8", "LANGUAGE=ru:en", "LC_ALL=ru_RU.UTF-8"],
                 "timezone": "Europe/Moscow",
             }

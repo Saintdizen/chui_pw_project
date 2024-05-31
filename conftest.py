@@ -1,3 +1,6 @@
+import json
+import this
+
 from _pytest.fixtures import fixture
 from playwright.sync_api import Playwright
 from selenium import webdriver
@@ -9,19 +12,15 @@ import inspect
 
 
 @fixture
+def mobile():
+    Browsers.mobile_mode = True
+
+
+@fixture
 def chrome(playwright: Playwright, request):
     test_case_id = request.node.nodeid
-    test_case_name = request.node.name
-    test_module_name = request.node.module.__name__
     test_file_path = request.fspath
-    print(
-        "\n==="
-        "\ntest case ID:", test_case_id,
-        "\ntest case name:", test_case_name,
-        "\ntest module name:", test_module_name,
-        "\ntest file:", test_file_path,
-        "\n===\n"
-    )
+    print(f"\nTEST FILEPATH: {test_file_path}\nTEST CASE ID: {test_case_id}\n")
     driver = None
     if settings.remote:
         capabilities = {

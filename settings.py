@@ -10,7 +10,6 @@ class Settings(BaseSettings):
     browser_width: int = 1600
     browser_height: int = 900
     write_har: bool = False
-    mobile_version: bool = False
     # Удаленное управление
     remote: bool = False
     selenoid_protocol: str = "http://"

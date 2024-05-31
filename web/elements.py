@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import Union
 
 from web.browsers import Browsers
+from settings import settings
 
 
 @dataclass
@@ -15,13 +16,23 @@ class WebElement(BaseElement):
         self.xpath = self.xpath
 
     def _init(self):
+        self.timeout = settings.timeout * 1000
         self.page = Browsers.page
-        self.page.wait_for_load_state()
+        self.page.wait_for_load_state(timeout=self.timeout)
 
     @property
     def web_element(self):
         self._init()
-        return self.page.locator(self.xpath)
+        element = self.page.locator(self.xpath)
+        element.wait_for(timeout=self.timeout, state="attached")
+        element.wait_for(timeout=self.timeout, state="visible")
+        return element
+
+    def wait_visible(self):
+        self._init()
+        self.web_element.wait_for(timeout=self.timeout, state="attached")
+        self.web_element.wait_for(timeout=self.timeout, state="visible")
+        return self.web_element
 
     def click(self):
         self._init()
@@ -29,7 +40,7 @@ class WebElement(BaseElement):
 
     def fill(self, text):
         self._init()
-        return self.web_element.fill(text)
+        self.web_element.fill(value=text, no_wait_after=False, force=True)
 
     def check_text(self, text):
         self._init()
@@ -41,7 +52,7 @@ class WebElement(BaseElement):
 
     def clear(self):
         self._init()
-        return self.web_element.clear()
+        self.web_element.clear()
 
     def get_attribute(self, attribute) -> str:
         self._init()

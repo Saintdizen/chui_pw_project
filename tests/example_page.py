@@ -11,4 +11,4 @@ class ExamplePage(BasePage):
 
     class Mobile:
         input_search = Element('//textarea[@aria-label="Поиск в Google"]')
-        btn_search = Element('(//*[@tabindex="0" and @role="option"])[1]')
+        btn_search = Element("(//*[text()='вот так вот'])[1]")

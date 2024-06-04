@@ -15,14 +15,14 @@ class WebElement(BaseElement):
     def __post_init__(self):
         self.xpath = self.xpath
 
-    def _init(self):
+    def __init(self):
         self.timeout = settings.timeout * 1000
         self.page = Browsers.page
         self.page.wait_for_load_state(timeout=self.timeout)
 
     @property
     def __web_element(self):
-        self._init()
+        self.__init()
         element = self.page.locator(self.xpath)
         element.wait_for(timeout=self.timeout, state="visible")
         return element

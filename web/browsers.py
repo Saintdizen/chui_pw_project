@@ -29,30 +29,22 @@ def set_screen():
 
 class Browsers(BaseSettings):
     mobile_mode: bool = False
-    browser: Browser = None
-    page: Page = None
-    context: BrowserContext = None
-
-    def __new__(cls, playwright: Playwright, ws=None):
-        cls.browser = playwright.chromium.launch(headless=False)
-        if hasattr(cls, 'mobile_mode'):
-            cls.context = cls.browser.new_context(**playwright.devices['Pixel 5'], record_har_path=set_name_har_file(), no_viewport=False)
-        else:
-            cls.context = cls.browser.new_context(viewport=set_screen(), record_har_path=set_name_har_file())
-        cls.context.set_default_timeout(set_timeout())
-        cls.context.set_default_navigation_timeout(set_timeout())
-        cls.page = cls.context.new_page()
-        return cls
-
-
-class RemoteBrowsers(BaseSettings):
-    mobile_mode: bool = False
     driver: webdriver.Remote = None
     browser: Browser = None
     page: Page = None
     context: BrowserContext = None
 
-    def __new__(cls, playwright: Playwright, request=None):
+    def _setup_locale_browser(self, playwright):
+        self.browser = playwright.chromium.launch(headless=False)
+        if hasattr(self, 'mobile_mode'):
+            self.context = self.browser.new_context(**playwright.devices['Pixel 5'], record_har_path=set_name_har_file(), no_viewport=False)
+        else:
+            self.context = self.browser.new_context(viewport=set_screen(), record_har_path=set_name_har_file())
+        self.context.set_default_timeout(set_timeout())
+        self.context.set_default_navigation_timeout(set_timeout())
+        self.page = self.context.new_page()
+
+    def _setup_remote_browser(self, playwright, request):
         capabilities = {
             "browserName": "chrome",
             "selenoid:options": {
@@ -63,17 +55,22 @@ class RemoteBrowsers(BaseSettings):
                 "timezone": "Europe/Moscow",
             }
         }
-        cls.driver = webdriver.Remote(desired_capabilities=capabilities, command_executor=settings.selenoid_url())
-        cls.driver.maximize_window()
-        cls.browser = playwright.chromium.connect_over_cdp(settings.selenoid_ws(cls.driver.session_id))
-        cls.browser.new_browser_cdp_session()
-        if hasattr(cls, 'mobile_mode'):
-            cls.context = cls.browser.new_context(**playwright.devices['Pixel 5'], record_har_path=set_name_har_file(), no_viewport=False)
+        self.driver = webdriver.Remote(desired_capabilities=capabilities, command_executor=settings.selenoid_url())
+        self.driver.maximize_window()
+        self.browser = playwright.chromium.connect_over_cdp(settings.selenoid_ws(self.driver.session_id))
+        self.browser.new_browser_cdp_session()
+        if hasattr(self, 'mobile_mode'):
+            self.context = self.browser.new_context(**playwright.devices['Pixel 5'], record_har_path=set_name_har_file(), no_viewport=False)
         else:
-            cls.context = cls.browser.new_context(screen=set_screen(), record_har_path=set_name_har_file(), no_viewport=True)
-        cls.context.set_default_timeout(set_timeout())
-        cls.context.set_default_navigation_timeout(set_timeout())
-        cls.page = cls.context.new_page()
-        cls.driver.close()
-        return cls
+            self.context = self.browser.new_context(screen=set_screen(), record_har_path=set_name_har_file(), no_viewport=True)
+        self.context.set_default_timeout(set_timeout())
+        self.context.set_default_navigation_timeout(set_timeout())
+        self.page = self.context.new_page()
+        self.driver.close()
 
+    def __new__(cls, playwright: Playwright, ws=None, request=None):
+        if settings.remote:
+            cls._setup_remote_browser(cls, playwright, request)
+        else:
+            cls._setup_locale_browser(cls, playwright)
+        return cls

@@ -4,7 +4,7 @@ import this
 from _pytest.fixtures import fixture
 from playwright.sync_api import Playwright
 
-from web.browsers import Browsers, RemoteBrowsers
+from web.browsers import Browsers
 from settings import settings
 import inspect
 
@@ -12,15 +12,11 @@ import inspect
 @fixture
 def mobile():
     Browsers.mobile_mode = True
-    RemoteBrowsers.mobile_mode = True
 
 
 @fixture
 def chrome(playwright: Playwright, request):
-    if settings.remote:
-        browser = RemoteBrowsers(playwright, request)
-    else:
-        browser = Browsers(playwright)
+    browser = Browsers(playwright=playwright, request=request)
     yield browser
     browser.context.close()
     browser.page.close()

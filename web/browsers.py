@@ -11,6 +11,17 @@ from settings import settings
 load_dotenv()
 
 
+def set_timeout(sec):
+    return sec * 1000
+
+
+def set_name_har_file():
+    if settings.write_har:
+        return f'{datetime.now().strftime("%d-%m-%Y_%H:%M:%S")}_log.har'
+    else:
+        return None
+
+
 class Browsers(BaseSettings):
     mobile_mode: bool = False
     browser: Browser = None
@@ -19,28 +30,17 @@ class Browsers(BaseSettings):
     __timeout: int = settings.timeout
     __width: int = settings.browser_width
     __height: int = settings.browser_height
-    __har_path: str = None
-
-    @staticmethod
-    def __set_timeout(sec):
-        return sec*1000
-
-    @staticmethod
-    def __set_name_har_file():
-        return datetime.now().strftime("%d-%m-%Y_%H:%M:%S")
 
     def __new__(cls, playwright: Playwright, ws=None):
         screen = {"width": cls.__width, "height": cls.__height}
-        if settings.write_har:
-            cls.__har_path = f'{cls.__set_name_har_file()}_log.har'
         cls.browser = playwright.chromium.launch(headless=False)
         if hasattr(cls, 'mobile_mode'):
             devices = playwright.devices['Pixel 5']
-            cls.context = cls.browser.new_context(**devices, record_har_path=cls.__har_path, no_viewport=False)
+            cls.context = cls.browser.new_context(**devices, record_har_path=set_name_har_file(), no_viewport=False)
         else:
-            cls.context = cls.browser.new_context(viewport=screen, record_har_path=cls.__har_path)
-        cls.context.set_default_timeout(cls.__set_timeout(cls.__timeout))
-        cls.context.set_default_navigation_timeout(cls.__set_timeout(cls.__timeout))
+            cls.context = cls.browser.new_context(viewport=screen, record_har_path=set_name_har_file())
+        cls.context.set_default_timeout(set_timeout(cls.__timeout))
+        cls.context.set_default_navigation_timeout(set_timeout(cls.__timeout))
         cls.page = cls.context.new_page()
         return cls
 
@@ -56,14 +56,6 @@ class RemoteBrowsers(BaseSettings):
     __height: int = settings.browser_height
     __har_path: str = None
 
-    @staticmethod
-    def __set_timeout(sec):
-        return sec*1000
-
-    @staticmethod
-    def __set_name_har_file():
-        return datetime.now().strftime("%d-%m-%Y_%H:%M:%S")
-
     def __new__(cls, playwright: Playwright, request=None):
         capabilities = {
             "browserName": "chrome",
@@ -78,18 +70,15 @@ class RemoteBrowsers(BaseSettings):
         cls.driver = webdriver.Remote(desired_capabilities=capabilities, command_executor=settings.selenoid_url())
         cls.driver.maximize_window()
         screen = {"width": cls.__width, "height": cls.__height}
-        if settings.write_har:
-            cls.__har_path = f'{cls.__set_name_har_file()}_log.har'
         cls.browser = playwright.chromium.connect_over_cdp(settings.selenoid_ws(cls.driver.session_id))
         cls.browser.new_browser_cdp_session()
-        print(cls.mobile_mode)
         if hasattr(cls, 'mobile_mode'):
             devices = playwright.devices['Pixel 5']
-            cls.context = cls.browser.new_context(**devices, record_har_path=cls.__har_path, no_viewport=False)
+            cls.context = cls.browser.new_context(**devices, record_har_path=set_name_har_file(), no_viewport=False)
         else:
-            cls.context = cls.browser.new_context(screen=screen, record_har_path=cls.__har_path, no_viewport=True)
-        cls.context.set_default_timeout(cls.__set_timeout(cls.__timeout))
-        cls.context.set_default_navigation_timeout(cls.__set_timeout(cls.__timeout))
+            cls.context = cls.browser.new_context(screen=screen, record_har_path=set_name_har_file(), no_viewport=True)
+        cls.context.set_default_timeout(set_timeout(cls.__timeout))
+        cls.context.set_default_navigation_timeout(set_timeout(cls.__timeout))
         cls.page = cls.context.new_page()
         cls.driver.close()
         return cls

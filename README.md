@@ -84,10 +84,10 @@ def test_title(mobile, chrome):
 # Запуск
 ## Запуск теста
 ```shell
-pytest -s -v tests/example/example_test_desktop.py --alluredir allure
+pytest -s -v tests/example/example_test_desktop.py --alluredir allure --disable-pytest-warnings --clean-alluredir --continue-on-collection-errors
 ```
 ```shell
-pytest -s -v tests/example/example_test_mobile.py --alluredir allure
+pytest -s -v tests/example/example_test_mobile.py --alluredir allure --disable-pytest-warnings --clean-alluredir --continue-on-collection-errors
 ```
 ## Генерация отчета
 ### linux

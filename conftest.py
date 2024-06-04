@@ -3,10 +3,8 @@ import this
 
 from _pytest.fixtures import fixture
 from playwright.sync_api import Playwright
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 
-from web.browsers import Browsers
+from web.browsers import Browsers, RemoteBrowsers
 from settings import settings
 import inspect
 
@@ -18,22 +16,8 @@ def mobile():
 
 @fixture
 def chrome(playwright: Playwright, request):
-    driver = None
     if settings.remote:
-        capabilities = {
-            "browserName": "chrome",
-            "selenoid:options": {
-                "enableVideo": False,
-                "enableVNC": settings.selenoid_enable_vnc,
-                "name": request.node.nodeid,
-                "env": ["LANG=ru_RU.UTF-8", "LANGUAGE=ru:en", "LC_ALL=ru_RU.UTF-8"],
-                "timezone": "Europe/Moscow",
-            }
-        }
-        driver = webdriver.Remote(desired_capabilities=capabilities, command_executor=settings.selenoid_url())
-        driver.maximize_window()
-        browser = Browsers(playwright, settings.selenoid_ws(driver.session_id))
-        driver.close()
+        browser = RemoteBrowsers(playwright, request)
     else:
         browser = Browsers(playwright)
     yield browser
@@ -41,4 +25,4 @@ def chrome(playwright: Playwright, request):
     browser.page.close()
     browser.browser.close()
     if settings.remote:
-        driver.quit()
+        browser.selenium_driver.quit()

@@ -31,7 +31,7 @@ class ExamplePage(BasePage):
 ```python
 import allure
 
-from tests.example_page import ExamplePage
+from tests.example.example_page import ExamplePage
 from web.allure.allure import t_step
 
 
@@ -58,7 +58,7 @@ def test_title(chrome):
 ```python
 import allure
 
-from tests.example_page import ExamplePage
+from tests.example.example_page import ExamplePage
 from web.allure.allure import t_step
 
 

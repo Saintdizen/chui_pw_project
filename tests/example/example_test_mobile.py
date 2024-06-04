@@ -1,6 +1,6 @@
 import allure
 
-from tests.example_page import ExamplePage
+from tests.example.example_page import ExamplePage
 from web.allure.allure import t_step
 
 

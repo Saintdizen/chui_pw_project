@@ -2,12 +2,16 @@ import allure
 from allure_commons.types import AttachmentType
 from contextlib import contextmanager
 
-from web.browsers import Browsers
+from web.browsers import Browsers, RemoteBrowsers
 
 
 def make_screen(name):
+    try:
+        browser = Browsers.page
+    except:
+        browser = RemoteBrowsers.page
     allure.attach(
-        Browsers.page.screenshot(),
+        browser.screenshot(),
         name=name,
         attachment_type=AttachmentType.PNG,
     )

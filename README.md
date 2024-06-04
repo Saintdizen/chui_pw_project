@@ -84,7 +84,10 @@ def test_title(mobile, chrome):
 # Запуск
 ## Запуск теста
 ```shell
-pytest -s -v tests/example_test_desktop.py --alluredir allure
+pytest -s -v tests/example/example_test_desktop.py --alluredir allure
+```
+```shell
+pytest -s -v tests/example/example_test_mobile.py --alluredir allure
 ```
 ## Генерация отчета
 ### linux

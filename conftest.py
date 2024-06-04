@@ -12,6 +12,7 @@ import inspect
 @fixture
 def mobile():
     Browsers.mobile_mode = True
+    RemoteBrowsers.mobile_mode = True
 
 
 @fixture
@@ -25,4 +26,4 @@ def chrome(playwright: Playwright, request):
     browser.page.close()
     browser.browser.close()
     if settings.remote:
-        browser.selenium_driver.quit()
+        browser.driver.quit()

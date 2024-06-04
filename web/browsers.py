@@ -36,7 +36,7 @@ class Browsers(BaseSettings):
         cls.browser = playwright.chromium.launch(headless=False)
         if hasattr(cls, 'mobile_mode'):
             devices = playwright.devices['Pixel 5']
-            cls.context = cls.browser.new_context(**devices, record_har_path=cls.__har_path, no_viewport=True)
+            cls.context = cls.browser.new_context(**devices, record_har_path=cls.__har_path, no_viewport=False)
         else:
             cls.context = cls.browser.new_context(viewport=screen, record_har_path=cls.__har_path)
         cls.context.set_default_timeout(cls.__set_timeout(cls.__timeout))
@@ -47,7 +47,7 @@ class Browsers(BaseSettings):
 
 class RemoteBrowsers(BaseSettings):
     mobile_mode: bool = False
-    selenium_driver: WebDriver = None
+    driver: webdriver.Remote = None
     browser: Browser = None
     page: Page = None
     context: BrowserContext = None
@@ -75,21 +75,22 @@ class RemoteBrowsers(BaseSettings):
                 "timezone": "Europe/Moscow",
             }
         }
-        selenium_driver = webdriver.Remote(desired_capabilities=capabilities, command_executor=settings.selenoid_url())
-        selenium_driver.maximize_window()
+        cls.driver = webdriver.Remote(desired_capabilities=capabilities, command_executor=settings.selenoid_url())
+        cls.driver.maximize_window()
         screen = {"width": cls.__width, "height": cls.__height}
         if settings.write_har:
             cls.__har_path = f'{cls.__set_name_har_file()}_log.har'
-        cls.browser = playwright.chromium.connect_over_cdp(settings.selenoid_ws(selenium_driver.session_id))
+        cls.browser = playwright.chromium.connect_over_cdp(settings.selenoid_ws(cls.driver.session_id))
         cls.browser.new_browser_cdp_session()
+        print(cls.mobile_mode)
         if hasattr(cls, 'mobile_mode'):
             devices = playwright.devices['Pixel 5']
-            cls.context = cls.browser.new_context(**devices, record_har_path=cls.__har_path, no_viewport=True)
+            cls.context = cls.browser.new_context(**devices, record_har_path=cls.__har_path, no_viewport=False)
         else:
             cls.context = cls.browser.new_context(screen=screen, record_har_path=cls.__har_path, no_viewport=True)
         cls.context.set_default_timeout(cls.__set_timeout(cls.__timeout))
         cls.context.set_default_navigation_timeout(cls.__set_timeout(cls.__timeout))
         cls.page = cls.context.new_page()
-        selenium_driver.close()
+        cls.driver.close()
         return cls
 

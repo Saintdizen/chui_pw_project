@@ -2,7 +2,7 @@ import abc
 from dataclasses import dataclass
 from typing import Union
 
-from web.browsers import Browsers
+from web.browsers import Browsers, RemoteBrowsers
 from settings import settings
 
 
@@ -17,7 +17,10 @@ class WebElement(BaseElement):
 
     def _init(self):
         self.timeout = settings.timeout * 1000
-        self.page = Browsers.page
+        try:
+            self.page = Browsers.page
+        except:
+            self.page = RemoteBrowsers.page
         self.page.wait_for_load_state(timeout=self.timeout)
 
     @property

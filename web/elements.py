@@ -1,4 +1,6 @@
 import abc
+import allure
+from allure_commons.types import AttachmentType
 from dataclasses import dataclass
 from typing import Union
 
@@ -24,47 +26,58 @@ class WebElement(BaseElement):
     def __web_element(self):
         self.__init()
         element = self.page.locator(self.xpath)
-        element.wait_for(timeout=self.timeout, state="visible")
+        states = ["attached", "visible"]
+        for state in states:
+            element.wait_for(timeout=self.timeout, state=state)
         return element
 
+    def screenshot(self):
+        allure.attach(
+            self.__web_element.screenshot(timeout=self.timeout),
+            name=self.xpath,
+            attachment_type=AttachmentType.PNG,
+        )
+
     def wait_visible(self):
-        self.__web_element.wait_for(timeout=self.timeout, state="visible")
+        states = ["attached", "visible"]
+        for state in states:
+            self.__web_element.wait_for(timeout=self.timeout, state=state)
         return self
 
     def click(self):
-        self.__web_element.click()
+        self.__web_element.click(timeout=self.timeout)
 
     def fill(self, text):
-        self.__web_element.fill(value=text)
+        self.__web_element.fill(value=text, timeout=self.timeout)
 
     def check_text(self, text):
-        check_txt = self.__web_element.text_content().strip()
+        check_txt = self.__web_element.text_content(timeout=self.timeout).strip()
         assert check_txt == text, f"Текст не совпадает"
 
     def get_value(self) -> str:
-        return self.__web_element.input_value()
+        return self.__web_element.input_value(timeout=self.timeout)
 
     def clear(self):
-        self.__web_element.clear()
+        self.__web_element.clear(timeout=self.timeout)
 
     def get_attribute(self, attribute) -> str:
-        return self.__web_element.get_attribute(attribute).strip()
+        return self.__web_element.get_attribute(attribute, timeout=self.timeout).strip()
 
     # ===
     def is_visible(self) -> bool:
-        return self.__web_element.is_visible()
+        return self.__web_element.is_visible(timeout=self.timeout)
 
     def is_hidden(self) -> bool:
-        return self.__web_element.is_hidden()
+        return self.__web_element.is_hidden(timeout=self.timeout)
 
     def is_checked(self) -> bool:
-        return self.__web_element.is_checked()
+        return self.__web_element.is_checked(timeout=self.timeout)
 
     def is_enabled(self) -> bool:
-        return self.__web_element.is_enabled()
+        return self.__web_element.is_enabled(timeout=self.timeout)
 
     def is_disabled(self) -> bool:
-        return self.__web_element.is_disabled()
+        return self.__web_element.is_disabled(timeout=self.timeout)
 
 
 @dataclass

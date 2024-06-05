@@ -96,6 +96,12 @@ pytest -s -v tests/example/example_test_mobile.py --alluredir allure --disable-p
 ```shell
 web/allure/bin/allure serve allure
 ```
+### ubuntu
+```shell
+sudo apt-get install default-jre
+wget https://github.com/allure-framework/allure2/releases/download/2.18.1/allure_2.18.1-1_all.deb
+sudo dpkg -i allure_2.18.1-1_all.deb
+```
 ### windows
 ```shell
 web/allure/bin/allure.bat serve allure

@@ -20,6 +20,7 @@ def test_title(mobile, chrome):
 
     with t_step("Заполнить поля"):
         page.Mobile.input_search.fill("Вот так вот")
+        page.Mobile.input_search.screenshot()
         page.Mobile.btn_search.click()
 
     with t_step("Проверить текст"):

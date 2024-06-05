@@ -15,6 +15,10 @@ def test_title(mobile, chrome):
     # page.on("request", lambda request: print(request.url))
     # page.on("response", lambda response: print(response.url))
 
+    # Перехват сообщений консоли
+    page.on("console", lambda msg: print(msg.text))
+    page.on("console", lambda msg: print(f"error: {msg.text}") if msg.type == "error" else None)
+
     with t_step("Открыть страницу"):
         page.open()
 

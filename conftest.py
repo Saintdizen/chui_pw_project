@@ -1,12 +1,10 @@
-import json
-import this
+import inspect
 
 from _pytest.fixtures import fixture
 from playwright.sync_api import Playwright
 
 from web.browsers import Browsers
 from settings import settings
-import inspect
 
 
 @fixture

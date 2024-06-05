@@ -28,6 +28,7 @@ class ExamplePage(BasePage):
         btn_search = Element("(//*[text()='вот так вот'])[1]")
 ```
 ## example_test_desktop.py
+
 ```python
 import allure
 
@@ -55,6 +56,7 @@ def test_title(chrome):
         page.check_page_contains_text("Невский: Вот так вот")
 ```
 ## example_test_mobile.py
+
 ```python
 import allure
 

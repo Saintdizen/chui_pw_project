@@ -1,7 +1,7 @@
-pytest-playwright
-playwright
 pydantic[dotenv]==1.8.2
-allure-pytest
-allure-python-commons
+pytest==7.4.4
+playwright==1.40.0
+pytest-playwright==0.4.3
+allure-pytest==2.13.2
+allure-python-commons==2.13.2
 selenium==4.1.0
-six

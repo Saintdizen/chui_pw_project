@@ -2,7 +2,8 @@ import abc
 import allure
 from allure_commons.types import AttachmentType
 from dataclasses import dataclass
-from typing import Union
+from typing import Union, List
+from playwright.sync_api import Locator
 
 from web.browsers import Browsers
 from settings import settings
@@ -23,7 +24,7 @@ class WebElement(BaseElement):
         self.__page.wait_for_load_state(timeout=self.__timeout)
 
     @property
-    def __web_element(self) -> WebElement:
+    def __web_element(self):
         self.__init()
         element = self.__page.locator(self.xpath)
         states = ["attached", "visible"]
@@ -39,7 +40,7 @@ class WebElement(BaseElement):
             attachment_type=AttachmentType.PNG,
         )
 
-    def wait_visible(self) -> WebElement:
+    def wait_visible(self):
         states = ["attached", "visible"]
         for state in states:
             self.__web_element.wait_for(timeout=self.__timeout, state=state)
